@@ -1,0 +1,7 @@
+@import "tailwindcss";
+
+#root,
+html,
+body {
+  @apply h-full w-full;
+}
