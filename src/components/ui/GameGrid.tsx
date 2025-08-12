@@ -1,5 +1,4 @@
 import { useContext, useState } from "react";
-// import { motion, AnimatePresence } from "framer-motion";
 import { shuffledGameItems } from "../../constants/gameItems";
 import GameItem from "./GameItem";
 import { GameContext } from "../../contexts/GameContext";
@@ -8,19 +7,34 @@ import XTwoCard from "./GameCards/XTwoCard";
 import BombCard from "./GameCards/BombCard";
 import ZeroCard from "./GameCards/ZeroCard";
 import StopCard from "./GameCards/StopCard";
+import { AnimatePresence, motion } from "framer-motion";
 
-// type GameGridProps = {
-//     counterRef: React.RefObject<HTMLImageElement | null>;
-// }
+type GameGridProps = {
+    counterRef: React.RefObject<HTMLImageElement | null>;
+}
 
-export default function GameGrid() {
+export default function GameGrid({ counterRef }: GameGridProps) {
     const { setRewardCount, setIsDangerAhead, setIsGameOver, setTips } = useContext(GameContext);
     const [flippedCards, setFlippedCards] = useState<boolean[]>(
         Array(shuffledGameItems.length).fill(false)
     );
+    const [flyingCash, setFlyingCash] = useState<{ id: number; startX: number; startY: number }[]>([]);
 
-    const handleFlip = (index: number) => {
+    const animateCash = (startX: number, startY: number) => {
+        for (let i = 0; i < 5; i++) {
+            setTimeout(() => {
+                setFlyingCash((prev) => [...prev, { id: Date.now() + i, startX, startY }]);
+            }, i * 100);
+        }
+    };
+
+    const handleFlip = (index: number, event: React.MouseEvent<Element, MouseEvent>) => {
         if (flippedCards[index]) return;
+        const rect = (event.currentTarget as Element).getBoundingClientRect();
+
+        const startX = rect.left + rect.width / 2;
+        const startY = rect.top + rect.height / 2;
+
 
         const newFlipped = [...flippedCards];
         newFlipped[index] = true;
@@ -31,12 +45,15 @@ export default function GameGrid() {
         switch (item.type) {
             case "cash":
                 setTimeout(() => {
-                    setRewardCount(prev => prev + (item.amount ?? 0));
-                }, 800);
-                setTips(prev => ({
-                    ...prev,
-                    cash: prev.cash - 1
-                }));
+                    animateCash(startX, startY);
+                    setTimeout(() => {
+                        setRewardCount(prev => prev + (item.amount ?? 0));
+                    }, 500);
+                    setTips(prev => ({
+                        ...prev,
+                        cash: prev.cash - 1
+                    }));
+                }, 500);
                 break;
             case "x2":
                 setRewardCount(prev => prev * 2);
@@ -77,12 +94,21 @@ export default function GameGrid() {
         }
     };
 
+    const getCounterPos = () => {
+        if (!counterRef.current) return { x: window.innerWidth / 2, y: window.innerHeight / 2 };
+        const rect = counterRef.current.getBoundingClientRect();
+        return {
+            x: rect.left + rect.width / 2,
+            y: rect.top + rect.height / 2,
+        };
+    };
+
     return (
         <div className="grid grid-cols-3 gap-2">
             {shuffledGameItems.map((item, index) => (
                 <GameItem
                     key={index}
-                    handleFlip={() => handleFlip(index)}
+                    handleFlip={(e) => handleFlip(index, e)}
                     flippedCard={flippedCards[index]}
                 >
                     <>
@@ -122,40 +148,35 @@ export default function GameGrid() {
                     </>
                 </GameItem>
             ))}
-        </div>
-    )
-}
-
-{/* <AnimatePresence>
-                {flyingCash.map((coin) => {
-                    const counterRect = counterRef.current?.getBoundingClientRect();
-                    const endX = counterRect ? counterRect.left + counterRect.width / 2 : coin.startX;
-                    const endY = counterRect ? counterRect.top + counterRect.height / 2 : coin.startY;
+            <AnimatePresence>
+                {flyingCash.map(({ id, startX, startY }) => {
+                    const { x: endX, y: endY } = getCounterPos();
 
                     return (
                         <motion.img
-                            key={coin.id}
+                            key={id}
                             src="cash.png"
-                            alt="cash"
-                            className="fixed size-8 pointer-events-none"
-                            style={{
-                                left: coin.startX,
-                                top: coin.startY,
-                                translateX: "-50%",
-                                translateY: "-50%",
+                            initial={{
+                                position: "fixed",
+                                left: startX,
+                                top: startY,
+                                opacity: 1,
                             }}
-                            initial={{ x: 0, y: 0, opacity: 1, scale: 1 }}
                             animate={{
-                                x: endX - coin.startX,
-                                y: endY - coin.startY,
+                                left: endX,
+                                top: endY,
                                 opacity: 0,
-                                scale: 0.5
                             }}
-                            transition={{ duration: 0.8, ease: "easeInOut" }}
+                            exit={{ opacity: 0 }}
+                            transition={{ duration: 0.5, ease: "easeIn" }}
+                            className="pointer-events-none size-10 z-40"
                             onAnimationComplete={() => {
-                                setFlyingCash(prev => prev.filter(c => c.id !== coin.id));
+                                setFlyingCash((prev) => prev.filter((c) => c.id !== id));
                             }}
                         />
                     );
                 })}
-            </AnimatePresence> */}
+            </AnimatePresence>
+        </div>
+    )
+}

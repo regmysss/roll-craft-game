@@ -5,3 +5,17 @@ html,
 body {
   @apply h-full w-full;
 }
+
+body {
+  font-family: "Inter", sans-serif;
+}
+
+.blur-sides-bottom {
+  -webkit-mask-image: linear-gradient(to top, transparent, black 90%);
+  mask-image: linear-gradient(to top, transparent, black 90%);
+}
+
+.blur-sides-top {
+  -webkit-mask-image: linear-gradient(to bottom, transparent, black 90%);
+  mask-image: linear-gradient(to bottom, transparent, black 90%);
+}
