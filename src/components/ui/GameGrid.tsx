@@ -8,6 +8,7 @@ import BombCard from "./GameCards/BombCard";
 import ZeroCard from "./GameCards/ZeroCard";
 import StopCard from "./GameCards/StopCard";
 import { AnimatePresence, motion } from "framer-motion";
+import { getCounterPos } from "../../utils/getCounterPosition";
 
 type GameGridProps = {
     counterRef: React.RefObject<HTMLImageElement | null>;
@@ -117,15 +118,6 @@ export default function GameGrid({ counterRef }: GameGridProps) {
         }
     };
 
-    const getCounterPos = () => {
-        if (!counterRef.current) return { x: window.innerWidth / 2, y: window.innerHeight / 2 };
-        const rect = counterRef.current.getBoundingClientRect();
-        return {
-            x: rect.left + rect.width / 2,
-            y: rect.top + rect.height / 2,
-        };
-    };
-
     return (
         <div className="grid grid-cols-3 gap-2">
             {shuffledGameItems.map((item, index) => (
@@ -139,42 +131,28 @@ export default function GameGrid({ counterRef }: GameGridProps) {
                         {
                             item.type === "cash" &&
                             <CashCard
-                                src={item.src}
-                                type={item.type}
                                 amount={item.amount || 0}
                             />
                         }
                         {
                             item.type === "x2" &&
-                            <XTwoCard
-                                src={item.src}
-                                type={item.type}
-                            />
+                            <XTwoCard />
                         }
                         {
-                            item.type === "bomb" && <BombCard
-                                src={item.src}
-                                type={item.type}
-                            />
+                            item.type === "bomb" && <BombCard />
                         }
                         {
-                            item.type === "zero" && <ZeroCard
-                                src={item.src}
-                                type={item.type}
-                            />
+                            item.type === "zero" && <ZeroCard />
                         }
                         {
-                            item.type === "stop" && <StopCard
-                                src={item.src}
-                                type={item.type}
-                            />
+                            item.type === "stop" && <StopCard />
                         }
                     </>
                 </GameItem>
             ))}
             <AnimatePresence>
                 {flyingCash.map(({ id, startX, startY }) => {
-                    const { x: endX, y: endY } = getCounterPos();
+                    const { x: endX, y: endY } = getCounterPos(counterRef);
 
                     return (
                         <motion.img

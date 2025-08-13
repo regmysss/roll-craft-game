@@ -1,9 +1,4 @@
-type XTwoCardProps = {
-    type: string;
-    src: string;
-};
-
-export default function XTwoCard({ type, src }: XTwoCardProps) {
+export default function XTwoCard() {
     return (
         <div className="relative flex flex-col items-center justify-center size-full">
             <div className="flex items-center justify-center">
@@ -22,9 +17,9 @@ export default function XTwoCard({ type, src }: XTwoCardProps) {
                 >
                 </div>
                 <img
-                    src={src}
-                    alt={type}
-                    className="size-12"
+                    src="x2-card.png"
+                    alt="x2"
+                    className="size-12 object-contain"
                 />
             </div>
         </div>

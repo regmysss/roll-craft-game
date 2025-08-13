@@ -36,7 +36,7 @@ export default function WinGame() {
                                 if (opened != 0)
                                     return (
                                         <div className="flex justify-center items-center gap-1" key={type}>
-                                            <img src={`${type}.png`} alt={type} className="size-8" />
+                                            <img src={`${type}.png`} alt={type} className="size-8 object-contain" />
                                             <span className="font-bold">{opened}</span>
                                         </div>
                                     );
@@ -46,16 +46,14 @@ export default function WinGame() {
                 }
             </div>
             <p className="text-[14px] text-white/80 mb-6">...claim and return to the main board</p>
-            <div className="flex items-center gap-2 w-full">
-                <a
-                    className="rounded-lg w-full text-lg font-extrabold bg-linear-to-b
+            <a
+                className="rounded-lg w-full text-lg font-extrabold bg-linear-to-b max-w-[194px]
                         from-[#6DBF1D] to-[#498013] text-white py-3 border-t-1 border-white/50
                         text-shadow-[0_1px_1px_rgba(0,0,0,0.2)]"
-                    href='.'
-                >
-                    <span>Claim</span>
-                </a>
-            </div>
+                href='.'
+            >
+                <span>Claim</span>
+            </a>
         </>
     )
 }

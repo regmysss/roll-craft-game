@@ -1,9 +1,4 @@
-type StopCardProps = {
-    type: string;
-    src: string;
-};
-
-export default function StopCard({ type, src }: StopCardProps) {
+export default function StopCard() {
     return (
         <div className="relative flex flex-col items-center justify-center size-full">
             <div className="flex items-center justify-center">
@@ -13,8 +8,8 @@ export default function StopCard({ type, src }: StopCardProps) {
                     alt="Light"
                 />
                 <img
-                    src={src}
-                    alt={type}
+                    src="stop.png"
+                    alt="Stop"
                     className="size-12"
                 />
             </div>

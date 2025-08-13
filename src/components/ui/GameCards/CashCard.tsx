@@ -2,11 +2,9 @@ import { parseNumber } from "../../../utils/parseNumber";
 
 type CashCardProps = {
     amount: number;
-    type: string;
-    src: string;
 };
 
-export default function CashCard({ type, src, amount }: CashCardProps) {
+export default function CashCard({ amount }: CashCardProps) {
     return (
         <div className="relative flex flex-col items-center justify-center size-full">
             <div
@@ -28,8 +26,8 @@ export default function CashCard({ type, src, amount }: CashCardProps) {
                 >
                 </div>
                 <img
-                    src={src}
-                    alt={type}
+                    src="cash.png"
+                    alt="Cash"
                     className="size-12"
                 />
             </div>

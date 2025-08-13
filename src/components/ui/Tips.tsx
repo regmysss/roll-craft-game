@@ -1,5 +1,4 @@
 import { useContext } from "react";
-import { tipsItems } from "../../constants/tipsItems";
 import { GameContext } from "../../contexts/GameContext";
 
 export default function Tips() {
@@ -7,14 +6,21 @@ export default function Tips() {
 
     return (
         <div className="flex items-center justify-between">
-            {tipsItems.map((item) => (
-                <div key={item.type} className="flex justify-center items-center gap-1">
-                    <div className="flex items-center justify-center size-8">
-                        <img src={item.src} alt={item.type} />
+            {
+                Object.entries(tips).map(([type, { amount }]) =>
+                (
+                    <div key={type} className="flex justify-center items-center gap-1">
+                        <div className="flex items-center justify-center size-8">
+                            <img
+                                src={`${type}.png`}
+                                alt={type}
+                                className="object-contain"
+                            />
+                        </div>
+                        <span className="font-bold">{amount}</span>
                     </div>
-                    <span className="font-bold">{tips[item.type as keyof typeof tips].amount}</span>
-                </div>
-            ))}
+                ))
+            }
         </div>
     )
 }

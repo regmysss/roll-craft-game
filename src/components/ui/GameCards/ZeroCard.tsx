@@ -1,9 +1,4 @@
-type ZeroCardProps = {
-    type: string;
-    src: string;
-};
-
-export default function ZeroCard({ type, src }: ZeroCardProps) {
+export default function ZeroCard() {
     return (
         <div className="relative flex flex-col items-center justify-center size-full">
             <div
@@ -21,8 +16,8 @@ export default function ZeroCard({ type, src }: ZeroCardProps) {
                     alt="Light"
                 />
                 <img
-                    src={src}
-                    alt={type}
+                    src="zero.png"
+                    alt="Zero"
                     className="size-12"
                 />
             </div>

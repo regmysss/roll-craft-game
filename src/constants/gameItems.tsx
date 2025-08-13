@@ -28,19 +28,15 @@ const GAME_ITEMS = [
     },
     {
         type: "bomb",
-        src: "bomb.png",
     },
     {
         type: "x2",
-        src: "x2.png",
     },
     {
         type: "zero",
-        src: "zero.png",
     },
     {
         type: "stop",
-        src: "stop.png",
     }
 ];
 
