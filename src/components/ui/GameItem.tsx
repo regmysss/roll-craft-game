@@ -39,8 +39,8 @@ export default function GameItem({ handleFlip, children, flippedCard, exploded, 
 
     const neonColor = getNeonColor(type);
 
-    const randomX = Math.random() * 400 - 200;
-    const randomY = Math.random() * 400 - 200;
+    const randomX = Math.random() * 150 - 75;
+    const randomY = Math.random() * 150 - 75;
     const randomRotate = Math.random() * 720 - 360;
 
     return (

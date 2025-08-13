@@ -1,6 +1,7 @@
 import { useContext } from "react";
 import { GameContext } from "../../../contexts/GameContext";
 import { parseNumber } from "../../../utils/parseNumber";
+import { motion } from "framer-motion";
 
 export default function DangerAhead() {
     const { rewardCount } = useContext(GameContext);
@@ -39,10 +40,13 @@ export default function DangerAhead() {
             </div>
             <p className="text-[14px] text-white/80 mb-6">...or defuse it and save your run!</p>
             <div className="flex items-center gap-2 w-full">
-                <a
+                <motion.a
                     className="flex-1 flex items-center justify-center gap-1 bg-linear-to-b 
                             from-[#FF5858] to-[#993535] rounded-lg h-12"
                     href='.'
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    transition={{ duration: 0.2 }}
                 >
                     <img className="size-6" src="bomb.png" alt="Bomb" />
                     <span
@@ -51,10 +55,13 @@ export default function DangerAhead() {
 
                         Take a hit
                     </span>
-                </a>
-                <a
+                </motion.a>
+                <motion.a
                     className="flex-1 flex items-center justify-center gap-1 bg-linear-to-b from-[#AD69FF] to-[#6723CD] rounded-lg h-12"
                     href='.'
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    transition={{ duration: 0.2 }}
                 >
                     <span
                         className="text-lg font-extrabold text-white/80 text-shadow-[0_0_1px_rgba(0,0,0,0.2)]"
@@ -63,7 +70,7 @@ export default function DangerAhead() {
                     </span>
                     <img src="game-coin.png" alt="Game coin" className="size-6" />
                     <span className="text-lg font-extrabold text-white/80 text-shadow-[0_0_1px_rgba(0,0,0,0.2)]">49</span>
-                </a>
+                </motion.a>
             </div>
         </>
     )
