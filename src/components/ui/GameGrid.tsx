@@ -112,6 +112,7 @@ export default function GameGrid({ counterRef }: GameGridProps) {
         <div className="grid grid-cols-3 gap-2">
             {shuffledGameItems.map((item, index) => (
                 <GameItem
+                    type={item.type}
                     key={index}
                     handleFlip={(e) => handleFlip(index, e)}
                     flippedCard={flippedCards[index]}
