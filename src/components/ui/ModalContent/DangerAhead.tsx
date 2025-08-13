@@ -13,7 +13,7 @@ export default function DangerAhead() {
             </div>
             <div className="flex items-center justify-center mb-4">
                 <img
-                    className="absolute object-center -z-10 opacity-30"
+                    className="absolute -z-10 opacity-30 w-[400px] h-[400px]"
                     src="light.png" alt="Light"
                 />
                 <div

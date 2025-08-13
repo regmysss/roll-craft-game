@@ -10,7 +10,7 @@ export default function WinGame() {
             <h2 className="text-2xl text-green-50 font-bold text-shadow-[0_1px_9px_#7bf1a8] mb-6">Results!</h2>
             <div className="flex items-center justify-center mb-4">
                 <img
-                    className="absolute object-center -z-10 opacity-30"
+                    className="absolute -z-10 opacity-30 w-[400px] h-[400px]"
                     src="light.png" alt="Light"
                 />
                 <div

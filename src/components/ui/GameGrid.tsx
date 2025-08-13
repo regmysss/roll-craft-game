@@ -7,8 +7,8 @@ import XTwoCard from "./GameCards/XTwoCard";
 import BombCard from "./GameCards/BombCard";
 import ZeroCard from "./GameCards/ZeroCard";
 import StopCard from "./GameCards/StopCard";
-import { AnimatePresence, motion } from "framer-motion";
-import { getCounterPos } from "../../utils/getCounterPosition";
+import { delay } from "../../utils/delay";
+import FlyingCash from "./FlyingCash";
 
 type GameGridProps = {
     counterRef: React.RefObject<HTMLImageElement | null>;
@@ -23,20 +23,18 @@ export default function GameGrid({ counterRef }: GameGridProps) {
     const [exploded, setExploded] = useState<boolean>(false);
 
     const animateCash = (startX: number, startY: number) => {
-        for (let i = 0; i < 5; i++) {
-            setTimeout(() => {
-                setFlyingCash((prev) => [...prev, { id: Date.now() + i, startX, startY }]);
-            }, i * 100);
-        }
-    };
+        Array.from({ length: 5 })
+            .forEach((_, i) => delay(() => setFlyingCash((prev) => [...prev, { id: Date.now() + i, startX, startY }]), i * 100));
+    }
+
 
     const handleFlip = (index: number, event: React.MouseEvent<Element, MouseEvent>) => {
         if (flippedCards[index]) return;
+
         const rect = (event.currentTarget as Element).getBoundingClientRect();
 
         const startX = rect.left + rect.width / 2;
         const startY = rect.top + rect.height / 2;
-
 
         const newFlipped = [...flippedCards];
         newFlipped[index] = true;
@@ -50,11 +48,9 @@ export default function GameGrid({ counterRef }: GameGridProps) {
 
         switch (item.type) {
             case "cash":
-                setTimeout(() => {
+                delay(() => {
                     animateCash(startX, startY);
-                    setTimeout(() => {
-                        setRewardCount(prev => prev + (item.amount ?? 0));
-                    }, 500);
+                    delay(() => setRewardCount(prev => prev + (item.amount ?? 0)), 500);
                     setTips(prev => ({
                         ...prev,
                         cash: {
@@ -93,12 +89,8 @@ export default function GameGrid({ counterRef }: GameGridProps) {
                         opened: prev.bomb.opened + 1
                     }
                 }));
-                setTimeout(() => {
-                    setExploded(true);
-                }, 500)
-                setTimeout(() => {
-                    setIsDangerAhead(true);
-                }, 1000);
+                delay(() => setExploded(true), 500)
+                delay(() => setIsDangerAhead(true), 1000);
                 break;
             case "stop":
                 setFlippedCards(Array(shuffledGameItems.length).fill(true));
@@ -109,9 +101,7 @@ export default function GameGrid({ counterRef }: GameGridProps) {
                         opened: prev.stop.opened + 1
                     }
                 }));
-                setTimeout(() => {
-                    setIsGameOver(true);
-                }, 1000);
+                delay(() => setIsGameOver(true), 1000);
                 break;
             default:
                 break;
@@ -150,35 +140,11 @@ export default function GameGrid({ counterRef }: GameGridProps) {
                     </>
                 </GameItem>
             ))}
-            <AnimatePresence>
-                {flyingCash.map(({ id, startX, startY }) => {
-                    const { x: endX, y: endY } = getCounterPos(counterRef);
-
-                    return (
-                        <motion.img
-                            key={id}
-                            src="cash.png"
-                            initial={{
-                                position: "fixed",
-                                left: startX,
-                                top: startY,
-                                opacity: 1,
-                            }}
-                            animate={{
-                                left: endX,
-                                top: endY,
-                                opacity: 0,
-                            }}
-                            exit={{ opacity: 0 }}
-                            transition={{ duration: 0.5, ease: "easeIn" }}
-                            className="pointer-events-none size-10 z-40"
-                            onAnimationComplete={() => {
-                                setFlyingCash((prev) => prev.filter((c) => c.id !== id));
-                            }}
-                        />
-                    );
-                })}
-            </AnimatePresence>
+            <FlyingCash
+                flyingCash={flyingCash}
+                counterRef={counterRef}
+                setFlyingCash={setFlyingCash}
+            />
         </div>
     )
 }
