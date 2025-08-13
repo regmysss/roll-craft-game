@@ -16,7 +16,7 @@ export default function Modal({ children }: GameOverModalProps) {
 
     return (
         <motion.div
-            className="fixed inset-0 bg-black/50 backdrop-blur-sm flex flex-col items-center justify-start px-10 py-5 z-50 overflow-y-auto"
+            className="fixed inset-0 bg-black/50 backdrop-blur-sm flex flex-col items-center justify-start px-3 py-5 z-50 overflow-y-auto"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
