@@ -1,7 +1,7 @@
 import { useContext } from "react";
 import { GameContext } from "../../../contexts/GameContext";
 import { parseNumber } from "../../../utils/parseNumber";
-import { motion } from "framer-motion";
+import ModalButton from "./ModalButton";
 
 export default function WinGame() {
     const { rewardCount, tips } = useContext(GameContext);
@@ -47,17 +47,11 @@ export default function WinGame() {
                 }
             </div>
             <p className="text-[14px] text-white/80 mb-6">...claim and return to the main board</p>
-            <motion.a
-                className="rounded-lg w-full text-lg font-extrabold bg-linear-to-b max-w-[194px]
-                        from-[#6DBF1D] to-[#498013] text-white py-3 border-t-1 border-white/50
-                        text-shadow-[0_1px_1px_rgba(0,0,0,0.2)]"
-                href='.'
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                transition={{ duration: 0.2 }}
+            <ModalButton
+                className="from-[#6DBF1D] to-[#498013]"
             >
                 <span>Claim</span>
-            </motion.a>
+            </ModalButton>
         </>
     )
 }

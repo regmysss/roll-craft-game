@@ -1,7 +1,6 @@
-import { animate, useMotionValue, useTransform, motion } from "framer-motion";
-import { useContext, useEffect } from "react";
-import { parseNumber } from "../../utils/parseNumber";
+import { useContext } from "react";
 import { GameContext } from "../../contexts/GameContext";
+import CounterUp from "./CounterUp";
 
 type RewardCounterProps = {
     ref: React.RefObject<HTMLImageElement | null>;
@@ -9,13 +8,6 @@ type RewardCounterProps = {
 
 export default function RewardCounter({ ref }: RewardCounterProps) {
     const { rewardCount } = useContext(GameContext);
-    const count = useMotionValue(rewardCount);
-    const rounded = useTransform(count, (latest) => parseNumber(Math.floor(latest)));
-
-    useEffect(() => {
-        const controls = animate(count, rewardCount, { duration: 0.5 });
-        return controls.stop;
-    }, [rewardCount, count]);
 
     return (
         <div className="flex items-center justify-center gap-1">
@@ -25,7 +17,10 @@ export default function RewardCounter({ ref }: RewardCounterProps) {
                 alt="Cash"
                 ref={ref}
             />
-            <motion.span className="text-[32px] font-extrabold">{rounded}</motion.span>
+            <CounterUp
+                count={rewardCount}
+                className="text-[32px] font-extrabold"
+            />
         </div>
     )
 }

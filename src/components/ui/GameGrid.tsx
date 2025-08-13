@@ -9,16 +9,19 @@ import ZeroCard from "./GameCards/ZeroCard";
 import StopCard from "./GameCards/StopCard";
 import { delay } from "../../utils/delay";
 import FlyingCash from "./FlyingCash";
+import type { GameItemType } from "../../types/types";
+import { createActions } from "../../utils/createActions";
 
 type GameGridProps = {
     counterRef: React.RefObject<HTMLImageElement | null>;
 }
 
 export default function GameGrid({ counterRef }: GameGridProps) {
-    const { setRewardCount, setIsDangerAhead, setIsGameOver, setTips, isOpenOne, setIsOpenOne } = useContext(GameContext);
+    const { setRewardCount, setIsDangerAhead, setIsGameOver, updateTips, isOpenOne, setIsOpenOne } = useContext(GameContext);
     const [flippedCards, setFlippedCards] = useState<boolean[]>(
         Array(shuffledGameItems.length).fill(false)
     );
+    const [gameItems, setGameItems] = useState<GameItemType[]>(shuffledGameItems);
     const [flyingCash, setFlyingCash] = useState<{ id: number; startX: number; startY: number }[]>([]);
     const [exploded, setExploded] = useState<boolean>(false);
 
@@ -27,12 +30,23 @@ export default function GameGrid({ counterRef }: GameGridProps) {
             .forEach((_, i) => delay(() => setFlyingCash((prev) => [...prev, { id: Date.now() + i, startX, startY }]), i * 100));
     }
 
+    const flipAll = () => setFlippedCards(Array(gameItems.length).fill(true));
 
-    const handleFlip = (index: number, event: React.MouseEvent<Element, MouseEvent>) => {
+    const ACTIONS = createActions(
+        animateCash,
+        updateTips,
+        setRewardCount,
+        setGameItems,
+        flipAll,
+        setExploded,
+        setIsDangerAhead,
+        setIsGameOver
+    );
+
+    const handleFlip = (index: number, event: React.MouseEvent) => {
         if (flippedCards[index]) return;
 
         const rect = (event.currentTarget as Element).getBoundingClientRect();
-
         const startX = rect.left + rect.width / 2;
         const startY = rect.top + rect.height / 2;
 
@@ -40,77 +54,15 @@ export default function GameGrid({ counterRef }: GameGridProps) {
         newFlipped[index] = true;
         setFlippedCards(newFlipped);
 
-        const item = shuffledGameItems[index];
+        const item = gameItems[index];
+        if (!isOpenOne) setIsOpenOne(true);
 
-        if (!isOpenOne) {
-            setIsOpenOne(true);
-        }
-
-        switch (item.type) {
-            case "cash":
-                delay(() => {
-                    animateCash(startX, startY);
-                    delay(() => setRewardCount(prev => prev + (item.amount ?? 0)), 500);
-                    setTips(prev => ({
-                        ...prev,
-                        cash: {
-                            amount: prev.cash.amount - 1,
-                            opened: prev.cash.opened + 1
-                        }
-                    }));
-                }, 500);
-                break;
-            case "x2":
-                setRewardCount(prev => prev * 2);
-                setTips(prev => ({
-                    ...prev,
-                    x2: {
-                        amount: prev.x2.amount - 1,
-                        opened: prev.x2.opened + 1
-                    }
-                }));
-                break;
-            case "zero":
-                setRewardCount(0);
-                setTips(prev => ({
-                    ...prev,
-                    zero: {
-                        amount: prev.zero.amount - 1,
-                        opened: prev.zero.opened + 1
-                    }
-                }));
-                break;
-            case "bomb":
-                setFlippedCards(Array(shuffledGameItems.length).fill(true));
-                setTips(prev => ({
-                    ...prev,
-                    bomb: {
-                        amount: prev.bomb.amount - 1,
-                        opened: prev.bomb.opened + 1
-                    }
-                }));
-                delay(() => setExploded(true), 500)
-                delay(() => setIsDangerAhead(true), 1000);
-                break;
-            case "stop":
-                setFlippedCards(Array(shuffledGameItems.length).fill(true));
-                setTips(prev => ({
-                    ...prev,
-                    stop: {
-                        amount: prev.stop.amount - 1,
-                        opened: prev.stop.opened + 1
-                    }
-                }));
-                delay(() => setIsGameOver(true), 1000);
-                break;
-            default:
-                break;
-        }
+        ACTIONS[item.type as keyof typeof ACTIONS]?.({ item, startX, startY });
     };
 
     return (
         <div className="grid grid-cols-3 gap-2">
-            {shuffledGameItems.map((item, index) => (
+            {gameItems.map((item, index) => (
                 <GameItem
                     type={item.type}
                     key={index}

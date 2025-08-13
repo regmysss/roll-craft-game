@@ -1,4 +1,4 @@
-import { parseNumber } from "../../../utils/parseNumber";
+import CounterUp from "../CounterUp";
 
 type CashCardProps = {
     amount: number;
@@ -31,9 +31,10 @@ export default function CashCard({ amount }: CashCardProps) {
                     className="size-12"
                 />
             </div>
-            <span className="text-white font-bold">
-                {parseNumber(amount)}
-            </span>
+            <CounterUp
+                count={amount}
+                className="font-bold"
+            />
         </div>
     )
 }

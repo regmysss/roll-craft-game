@@ -20,18 +20,15 @@ function getNeonColor(type: string) {
     }
 }
 
+const cardFaceClasses = "absolute w-full h-full flex items-center justify-center bg-gradient-to-b from-white/10 to-white/5  backface-hidden backdrop-blur-lg rounded-xl font-extrabold";
+
 export default function GameItem({ handleFlip, children, flippedCard, exploded, type }: GameItemProps) {
-    const [highlighted, setHighlighted] = useState(false);
-    const [animateOut, setAnimateOut] = useState(false);
+    const [highlighted, setHighlighted] = useState(true);
 
     useEffect(() => {
         if (flippedCard) {
-            setHighlighted(true);
-            setAnimateOut(false);
-            const timer = setTimeout(() => setAnimateOut(true), 10);
             const removeTimer = setTimeout(() => setHighlighted(false), 1000);
             return () => {
-                clearTimeout(timer);
                 clearTimeout(removeTimer);
             };
         }
@@ -62,27 +59,21 @@ export default function GameItem({ handleFlip, children, flippedCard, exploded, 
                 transition-transform duration-500 ${flippedCard ? "rotate-y-180" : ""}`}
             >
                 <div
-                    className="absolute w-full h-full flex items-center justify-center bg-gradient-to-b from-white/10 to-white/5
-                    border-t border-white/20 hover:border-white/70
-                    transition-colors duration-300
-                    backface-hidden backdrop-blur-lg
-                    rounded-xl text-white/40 text-[40px] font-extrabold"
+                    className={`${cardFaceClasses} border-t border-white/20 hover:border-white/70 transition-colors duration-300 text-white/40 text-[40px]`}
                 >
                     $
                 </div>
-                <div
-                    className={`absolute overflow-hidden w-full h-full flex items-center justify-center
-                    backface-hidden backdrop-blur-lg
-                    bg-gradient-to-b from-white/10 to-white/5 rounded-xl text-white font-extrabold rotate-y-180`}
-                    style={{
-                        border: highlighted ? `2px solid ${neonColor}` : "none",
-                        boxShadow: highlighted ? `0 0 10px ${neonColor}` : "none",
-                        transition: animateOut ? "all 1s ease-out" : "none"
-                    }}
+                <motion.div
+                    initial={{ border: `2px solid ${neonColor}`, boxShadow: `0 0 10px ${neonColor}` }}
+                    animate={highlighted ? { border: `2px solid ${neonColor}`, boxShadow: `0 0 10px ${neonColor}` }
+                        : { border: "none", boxShadow: "none" }}
+                    transition={{ duration: 1 }}
+                    className={`${cardFaceClasses} overflow-hidden bg-gradient-to-b from-white/10 to-white/5 text-white rotate-y-180`}
                 >
                     {children}
-                </div>
+                </motion.div>
+
             </div>
-        </motion.div>
+        </motion.div >
     );
 }

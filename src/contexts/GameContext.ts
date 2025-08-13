@@ -25,28 +25,7 @@ export const GameContext = createContext<{
             opened: number;
         };
     };
-    setTips: React.Dispatch<React.SetStateAction<{
-        cash: {
-            amount: number;
-            opened: number;
-        };
-        x2: {
-            amount: number;
-            opened: number;
-        };
-        zero: {
-            amount: number;
-            opened: number;
-        };
-        bomb: {
-            amount: number;
-            opened: number;
-        };
-        stop: {
-            amount: number;
-            opened: number;
-        };
-    }>>;
+    updateTips: (type: string) => void;
     isOpenOne: boolean;
     setIsOpenOne: React.Dispatch<React.SetStateAction<boolean>>;
     isWinGame: boolean;
@@ -63,7 +42,7 @@ export const GameContext = createContext<{
         bomb: { amount: 1, opened: 0 },
         stop: { amount: 1, opened: 0 }
     },
-    setTips: () => { },
+    updateTips: () => { },
     isOpenOne: false,
     setIsOpenOne: () => { },
     rewardCount: 0,

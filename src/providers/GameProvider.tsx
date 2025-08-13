@@ -30,13 +30,23 @@ export default function GameProvider({ children }: { children: React.ReactNode }
     });
     const [isOpenOne, setIsOpenOne] = useState<boolean>(false);
 
+    const updateTips = (type: string) => {
+        setTips(prev => ({
+            ...prev,
+            [type]: {
+                amount: prev[type as keyof typeof prev].amount - 1,
+                opened: prev[type as keyof typeof prev].opened + 1
+            }
+        }));
+    }
+
     return (
         <GameContext.Provider value={
             {
                 isOpenOne,
                 setIsOpenOne,
                 tips,
-                setTips,
+                updateTips,
                 rewardCount,
                 setRewardCount,
                 isWinGame,
