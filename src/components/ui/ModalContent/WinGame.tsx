@@ -3,14 +3,11 @@ import { GameContext } from "../../../contexts/GameContext";
 import { parseNumber } from "../../../utils/parseNumber";
 
 export default function WinGame() {
-    const { rewardCount } = useContext(GameContext);
+    const { rewardCount, tips } = useContext(GameContext);
 
     return (
         <>
-            <div className='mb-11'>
-                <h2 className="text-2xl text-green-50 font-bold text-shadow-[0_1px_9px_#7bf1a8]">Win!</h2>
-                <p className="text-[14px] text-white/80">Congratulations! You won!</p>
-            </div>
+            <h2 className="text-2xl text-green-50 font-bold text-shadow-[0_1px_9px_#7bf1a8] mb-6">Results!</h2>
             <div className="flex items-center justify-center mb-4">
                 <img
                     className="absolute object-center -z-10 opacity-30"
@@ -26,10 +23,28 @@ export default function WinGame() {
                 />
             </div>
             <p
-                className="font-bold text-3xl"
+                className="font-bold text-3xl mb-6"
             >
                 {parseNumber(rewardCount)}
             </p>
+            <div className="flex flex-col items-center gap-3 bg-black/50 p-3 rounded-lg mb-6 w-full border border-white/40">
+                <p className="font-bold text-white/80">You open</p>
+                {
+                    <div className="flex items-center justify-center gap-2">
+                        {
+                            Object.entries(tips).map(([type, { opened }]) => {
+                                if (opened != 0)
+                                    return (
+                                        <div className="flex justify-center items-center gap-1" key={type}>
+                                            <img src={`${type}.png`} alt={type} className="size-8" />
+                                            <span className="font-bold">{opened}</span>
+                                        </div>
+                                    );
+                            })
+                        }
+                    </div>
+                }
+            </div>
             <p className="text-[14px] text-white/80 mb-6">...claim and return to the main board</p>
             <div className="flex items-center gap-2 w-full">
                 <a

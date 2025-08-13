@@ -27,7 +27,7 @@ export default function Modal({ children }: GameOverModalProps) {
                 className="mb-5"
             />
             <motion.div
-                className="flex-1 flex flex-col items-center justify-center text-center"
+                className="flex-1 flex flex-col items-center justify-center text-center max-w-[400px] w-full"
                 initial={{ scale: 0.8, opacity: 0 }}
                 animate={{ scale: 1, opacity: 1 }}
                 exit={{ scale: 0.8, opacity: 0 }}

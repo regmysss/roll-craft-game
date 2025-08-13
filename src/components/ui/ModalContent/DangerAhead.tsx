@@ -52,15 +52,16 @@ export default function DangerAhead() {
                         Take a hit
                     </span>
                 </a>
-                <button
+                <a
                     className="flex-1 flex items-center justify-center gap- bg-linear-to-b from-[#AD69FF] to-[#6723CD] rounded-lg h-12"
+                    href='.'
                 >
                     <span
                         className="text-lg font-extrabold text-white/80 text-shadow-[0_0_1px_rgba(0,0,0,0.2)]"
                     >
                         Defuse for 49
                     </span>
-                </button>
+                </a>
             </div>
         </>
     )

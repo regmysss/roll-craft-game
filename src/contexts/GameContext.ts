@@ -4,19 +4,51 @@ export const GameContext = createContext<{
     rewardCount: number;
     setRewardCount: React.Dispatch<React.SetStateAction<number>>;
     tips: {
-        cash: number;
-        x2: number;
-        zero: number;
-        bomb: number;
-        stop: number;
+        cash: {
+            amount: number;
+            opened: number;
+        };
+        x2: {
+            amount: number;
+            opened: number;
+        };
+        zero: {
+            amount: number;
+            opened: number;
+        };
+        bomb: {
+            amount: number;
+            opened: number;
+        };
+        stop: {
+            amount: number;
+            opened: number;
+        };
     };
     setTips: React.Dispatch<React.SetStateAction<{
-        cash: number;
-        x2: number;
-        zero: number;
-        bomb: number;
-        stop: number;
+        cash: {
+            amount: number;
+            opened: number;
+        };
+        x2: {
+            amount: number;
+            opened: number;
+        };
+        zero: {
+            amount: number;
+            opened: number;
+        };
+        bomb: {
+            amount: number;
+            opened: number;
+        };
+        stop: {
+            amount: number;
+            opened: number;
+        };
     }>>;
+    isOpenOne: boolean;
+    setIsOpenOne: React.Dispatch<React.SetStateAction<boolean>>;
     isWinGame: boolean;
     setIsWinGame: React.Dispatch<React.SetStateAction<boolean>>;
     isGameOver: boolean;
@@ -25,13 +57,15 @@ export const GameContext = createContext<{
     setIsDangerAhead: React.Dispatch<React.SetStateAction<boolean>>;
 }>({
     tips: {
-        cash: 5,
-        x2: 1,
-        zero: 1,
-        bomb: 1,
-        stop: 1
+        cash: { amount: 5, opened: 0 },
+        x2: { amount: 2, opened: 0 },
+        zero: { amount: 1, opened: 0 },
+        bomb: { amount: 1, opened: 0 },
+        stop: { amount: 1, opened: 0 }
     },
     setTips: () => { },
+    isOpenOne: false,
+    setIsOpenOne: () => { },
     rewardCount: 0,
     setRewardCount: () => { },
     isWinGame: false,

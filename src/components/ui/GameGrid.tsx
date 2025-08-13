@@ -14,11 +14,12 @@ type GameGridProps = {
 }
 
 export default function GameGrid({ counterRef }: GameGridProps) {
-    const { setRewardCount, setIsDangerAhead, setIsGameOver, setTips } = useContext(GameContext);
+    const { setRewardCount, setIsDangerAhead, setIsGameOver, setTips, isOpenOne, setIsOpenOne } = useContext(GameContext);
     const [flippedCards, setFlippedCards] = useState<boolean[]>(
         Array(shuffledGameItems.length).fill(false)
     );
     const [flyingCash, setFlyingCash] = useState<{ id: number; startX: number; startY: number }[]>([]);
+    const [exploded, setExploded] = useState<boolean>(false);
 
     const animateCash = (startX: number, startY: number) => {
         for (let i = 0; i < 5; i++) {
@@ -42,6 +43,10 @@ export default function GameGrid({ counterRef }: GameGridProps) {
 
         const item = shuffledGameItems[index];
 
+        if (!isOpenOne) {
+            setIsOpenOne(true);
+        }
+
         switch (item.type) {
             case "cash":
                 setTimeout(() => {
@@ -51,7 +56,10 @@ export default function GameGrid({ counterRef }: GameGridProps) {
                     }, 500);
                     setTips(prev => ({
                         ...prev,
-                        cash: prev.cash - 1
+                        cash: {
+                            amount: prev.cash.amount - 1,
+                            opened: prev.cash.opened + 1
+                        }
                     }));
                 }, 500);
                 break;
@@ -59,22 +67,34 @@ export default function GameGrid({ counterRef }: GameGridProps) {
                 setRewardCount(prev => prev * 2);
                 setTips(prev => ({
                     ...prev,
-                    x2: prev.x2 - 1
+                    x2: {
+                        amount: prev.x2.amount - 1,
+                        opened: prev.x2.opened + 1
+                    }
                 }));
                 break;
             case "zero":
                 setRewardCount(0);
                 setTips(prev => ({
                     ...prev,
-                    zero: prev.zero - 1
+                    zero: {
+                        amount: prev.zero.amount - 1,
+                        opened: prev.zero.opened + 1
+                    }
                 }));
                 break;
             case "bomb":
                 setFlippedCards(Array(shuffledGameItems.length).fill(true));
                 setTips(prev => ({
                     ...prev,
-                    bomb: prev.bomb - 1
+                    bomb: {
+                        amount: prev.bomb.amount - 1,
+                        opened: prev.bomb.opened + 1
+                    }
                 }));
+                setTimeout(() => {
+                    setExploded(true);
+                }, 500)
                 setTimeout(() => {
                     setIsDangerAhead(true);
                 }, 1000);
@@ -83,7 +103,10 @@ export default function GameGrid({ counterRef }: GameGridProps) {
                 setFlippedCards(Array(shuffledGameItems.length).fill(true));
                 setTips(prev => ({
                     ...prev,
-                    stop: prev.stop - 1
+                    stop: {
+                        amount: prev.stop.amount - 1,
+                        opened: prev.stop.opened + 1
+                    }
                 }));
                 setTimeout(() => {
                     setIsGameOver(true);
@@ -110,6 +133,7 @@ export default function GameGrid({ counterRef }: GameGridProps) {
                     key={index}
                     handleFlip={(e) => handleFlip(index, e)}
                     flippedCard={flippedCards[index]}
+                    exploded={exploded}
                 >
                     <>
                         {

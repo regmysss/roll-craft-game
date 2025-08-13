@@ -12,7 +12,7 @@ export default function Tips() {
                     <div className="flex items-center justify-center size-8">
                         <img src={item.src} alt={item.type} />
                     </div>
-                    <span className="font-bold">{tips[item.type as keyof typeof tips]}</span>
+                    <span className="font-bold">{tips[item.type as keyof typeof tips].amount}</span>
                 </div>
             ))}
         </div>

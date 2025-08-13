@@ -7,16 +7,34 @@ export default function GameProvider({ children }: { children: React.ReactNode }
     const [isGameOver, setIsGameOver] = useState<boolean>(false);
     const [isDangerAhead, setIsDangerAhead] = useState<boolean>(false);
     const [tips, setTips] = useState({
-        cash: 5,
-        x2: 1,
-        zero: 1,
-        bomb: 1,
-        stop: 1
+        cash: {
+            amount: 5,
+            opened: 0
+        },
+        x2: {
+            amount: 1,
+            opened: 0
+        },
+        zero: {
+            amount: 1,
+            opened: 0
+        },
+        bomb: {
+            amount: 1,
+            opened: 0
+        },
+        stop: {
+            amount: 1,
+            opened: 0
+        }
     });
+    const [isOpenOne, setIsOpenOne] = useState<boolean>(false);
 
     return (
         <GameContext.Provider value={
             {
+                isOpenOne,
+                setIsOpenOne,
                 tips,
                 setTips,
                 rewardCount,
