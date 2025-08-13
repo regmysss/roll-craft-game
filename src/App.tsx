@@ -17,7 +17,7 @@ function App() {
   const counterRef = useRef<HTMLImageElement>(null);
 
   return (
-    <div className="relative flex flex-col min-h-screen bg-[#181A20] px-10 py-5 text-white overflow-hidden">
+    <div className="relative flex flex-col h-full bg-[#181A20] px-10 py-5 text-white overflow-hidden">
       <StarBackground />
       <div className="flex flex-col flex-1 z-20">
         <Header />
