@@ -35,7 +35,7 @@ export default function GameItem({ handleFlip, children, flippedCard, exploded }
                     border-t border-white/20 hover:border-white/70
                     transition-colors duration-300
                     backface-hidden backdrop-blur-lg
-                    rounded-xl text-white text-[40px] font-extrabold"
+                    rounded-xl text-white/40 text-[40px] font-extrabold"
                 >
                     $
                 </div>

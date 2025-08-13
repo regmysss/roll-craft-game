@@ -3,12 +3,12 @@ export default function BombCard() {
         <div className="relative flex flex-col items-center justify-center size-full">
             <div className="flex items-center justify-center">
                 <img
-                    className="absolute size-full object-cover -z-20 opacity-50"
+                    className="absolute object-cover -z-10 opacity-50 min-w-50"
                     src="light.png"
                     alt="Light"
                 />
                 <div
-                    className="absolute size-12 bg-red-500 -z-10 blur-lg"
+                    className="absolute size-full bg-[#E13030] -z-20 blur-lg"
                 >
                 </div>
                 <img

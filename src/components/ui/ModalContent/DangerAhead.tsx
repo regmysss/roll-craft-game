@@ -17,7 +17,7 @@ export default function DangerAhead() {
                     src="light.png" alt="Light"
                 />
                 <div
-                    className="absolute size-46 bg-red-500 -z-20 blur-[100px] rounded-full"
+                    className="absolute w-[220px] h-[120px] bg-[#E13030] -z-20 blur-[100px] rounded-full"
                 ></div>
                 <img
                     className="size-24"
