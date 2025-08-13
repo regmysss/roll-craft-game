@@ -28,7 +28,7 @@ export default function WinGame() {
             >
                 {parseNumber(rewardCount)}
             </p>
-            <div className="flex flex-col items-center gap-3 bg-black/50 p-3 rounded-lg mb-6 w-full border border-white/40">
+            <div className="flex flex-col items-center gap-3 bg-black/50 p-3 rounded-lg mb-6 w-full border border-white/40 max-w-[250px]">
                 <p className="font-bold text-white/80">You open</p>
                 {
                     <div className="flex items-center justify-center gap-2">
