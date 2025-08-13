@@ -19,7 +19,7 @@ export const createActions = (
         }, 500);
     },
 
-    x2: (_) => {
+    x2: () => {
         setGameItems(prev =>
             prev.map(item =>
                 item.type === "cash"
@@ -31,19 +31,19 @@ export const createActions = (
         updateTips("x2");
     },
 
-    zero: (_) => {
+    zero: () => {
         setRewardCount(0);
         updateTips("zero");
     },
 
-    bomb: (_) => {
+    bomb: () => {
         flipAll();
         updateTips("bomb");
         delay(() => setExploded(true), 500);
         delay(() => setIsDangerAhead(true), 1000);
     },
 
-    stop: (_) => {
+    stop: () => {
         flipAll();
         updateTips("stop");
         delay(() => setIsGameOver(true), 1000);
