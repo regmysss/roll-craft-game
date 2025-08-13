@@ -1,6 +1,9 @@
 import type { ActionParams, GameItemType } from "../types/types";
 import { delay } from "./delay";
 
+const DELAY_DEFAULT = 500;
+const DELAY_GAME_OVER = 1000;
+
 export const createActions = (
     animateCash: (startX: number, startY: number) => void,
     updateTips: (type: string) => void,
@@ -12,40 +15,44 @@ export const createActions = (
     setIsGameOver: (value: boolean) => void
 ) => ({
     cash: ({ item, startX, startY }: ActionParams) => {
+        updateTips("cash");
         delay(() => {
             animateCash(startX, startY);
-            delay(() => setRewardCount(prev => prev + (item.amount ?? 0)), 500);
-            updateTips("cash");
-        }, 500);
+            setRewardCount(prev => prev + (item.amount ?? 0));
+        }, DELAY_DEFAULT);
     },
 
     x2: () => {
-        setGameItems(prev =>
-            prev.map(item =>
-                item.type === "cash"
-                    ? { ...item, amount: (item.amount ?? 0) * 2 }
-                    : item
-            )
-        );
-        setRewardCount(prev => prev * 2);
         updateTips("x2");
+        delay(() => {
+            setGameItems(prev =>
+                prev.map(item =>
+                    item.type === "cash"
+                        ? { ...item, amount: (item.amount ?? 0) * 2 }
+                        : item
+                )
+            );
+            setRewardCount(prev => prev * 2);
+        }, DELAY_DEFAULT);
     },
 
     zero: () => {
-        setRewardCount(0);
         updateTips("zero");
+        delay(() => {
+            setRewardCount(0)
+        }, DELAY_DEFAULT);
     },
 
     bomb: () => {
         flipAll();
         updateTips("bomb");
-        delay(() => setExploded(true), 500);
-        delay(() => setIsDangerAhead(true), 1000);
+        delay(() => setExploded(true), DELAY_DEFAULT);
+        delay(() => setIsDangerAhead(true), DELAY_GAME_OVER);
     },
 
     stop: () => {
         flipAll();
         updateTips("stop");
-        delay(() => setIsGameOver(true), 1000);
+        delay(() => setIsGameOver(true), DELAY_GAME_OVER);
     }
 });
