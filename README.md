@@ -5,7 +5,7 @@
 Players flip cards to reveal different outcomes: cash, multipliers, zero, bomb, or stop — each affecting the score and the flow of the game.  
 It’s designed as a quick, fun, gamified experience.
 
-## Demo / Screenshots
+## Demo
 [Play Now](roll-craft-game-henna.vercel.app)
 
 ## Tech Stack
